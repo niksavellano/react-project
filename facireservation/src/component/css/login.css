@@ -1,0 +1,17 @@
+#firstName,
+#lastName {
+  width: 50%;
+}
+input {
+  margin: 5px;
+}
+.jumbotron {
+  background-color: #b2ebf2;
+}
+.form-group1 {
+  display: flex;
+}
+.form-group2 {
+  display: flex;
+  flex-direction: column;
+}
