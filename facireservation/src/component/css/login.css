@@ -1,3 +1,6 @@
+body {
+  background-color: #eae7dc;
+}
 #firstName,
 #lastName {
   width: 50%;
@@ -6,7 +9,7 @@ input {
   margin: 5px;
 }
 .jumbotron {
-  background-color: #b2ebf2;
+  background-color: #eae7dc;
 }
 .form-group1 {
   display: flex;
@@ -14,4 +17,34 @@ input {
 .form-group2 {
   display: flex;
   flex-direction: column;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  padding: 10px;
+}
+.heading {
+  display: flex;
+}
+#emailLogin,
+#passwordLogin {
+  width: 30%;
+  margin: 10px;
+}
+.btn {
+  background-color: #e98074;
+  color: white;
+  height: 50px;
+}
+#serve {
+  color: #e85a4f;
+}
+.heading2 {
+  display: flex;
+  justify-content: flex-end;
+  align-content: center;
+  width: 100%;
+  margin-right: 20px;
 }

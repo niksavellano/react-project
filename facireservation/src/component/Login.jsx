@@ -1,52 +1,56 @@
 import React, { Component } from "react";
+
 import "bootstrap/dist/css/bootstrap.min.css";
+
 import "./css/login.css";
+import SignUp from "./SignUpForm";
+
+import firebase from "firebase";
+import { firebaseConfig } from "./Config";
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+import Heading from "./Heading";
+
+firebase.initializeApp(firebaseConfig);
 
 class Login extends Component {
+  state = { isSignedIn: false };
+  uiConfig = {
+    signInFlow: "popup",
+    signInOptions: [
+      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+      firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+      firebase.auth.GithubAuthProvider.PROVIDER_ID
+    ],
+    callbacks: {
+      signInSuccess: () => false
+    }
+  };
+  componentDidMount = () => {
+    firebase.auth().onAuthStateChanged(user => {
+      this.setState({ isSignedIn: !!user });
+    });
+  };
   render() {
     return (
-      <div className="jumbotron">
-        <h1>Sign Up</h1>
-        <div className="form-group1">
-          <input
-            type="text"
-            name="firstName"
-            id="firstName"
-            placeholder="First Name"
-            className="form-control"
-          />
-          <input
-            type="text"
-            name="lastName"
-            id="lastName"
-            placeholder="Last Name"
-            className="form-control"
-          />
-        </div>
-        <div className="form-group2">
-          <input
-            type="email"
-            name="email"
-            id="email"
-            placeholder="Email"
-            className="form-control"
-          />
-          <input
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Password"
-            className="form-control"
-          />
-          <input
-            type="newPassword"
-            name="newPassword"
-            id="newPassword"
-            placeholder="New Password"
-            className="form-control"
-          />
-        </div>
-        <button className="btn btn-primary">Submit</button>
+      <div>
+        {this.state.isSignedIn ? (
+          <span>
+            <div>Signed In</div>
+            <button onClick={() => firebase.auth().signOut()}>Sign out</button>
+          </span>
+        ) : (
+          <span>
+            <Heading />
+            <div className="container">
+              <SignUp />
+              <StyledFirebaseAuth
+                className="jumbotron"
+                uiConfig={this.uiConfig}
+                firebaseAuth={firebase.auth()}
+              />
+            </div>
+          </span>
+        )}
       </div>
     );
   }
