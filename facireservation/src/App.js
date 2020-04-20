@@ -3,10 +3,14 @@ import Login from "./component/Login";
 
 import "./App.css";
 
+import { BrowserRouter } from "react-router-dom";
+
 function App() {
   return (
     <div>
-      <Login />
+      <BrowserRouter>
+        <Login />
+      </BrowserRouter>
     </div>
   );
 }

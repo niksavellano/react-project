@@ -3,10 +3,17 @@ import firebase from "firebase";
 
 class SignUp extends Component {
   state = {};
+
   signUp = () => {
+    let database = firebase.database().ref();
+    let rootRef = database.child("Users");
+
     let email = document.getElementById("email").value;
     let password = document.getElementById("password").value;
     let newPassword = document.getElementById("newPassword").value;
+    let firstName = document.getElementById("firstName").value;
+    let lastName = document.getElementById("lastName").value;
+
     if (email === 0) {
       alert("Email Address field is required");
     } else if (password === 0) {
@@ -18,7 +25,11 @@ class SignUp extends Component {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(u => {
-          console.log("Success");
+          return rootRef.child(u.user.uid).set({
+            email: email,
+            firstName: firstName,
+            lastName: lastName
+          });
         })
         .catch(err => {
           console.log("error: " + err.toString());
