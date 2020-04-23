@@ -1,9 +1,15 @@
 import React, { Component } from "react";
 
 import { NavLink } from "react-router-dom";
+import firebase from "firebase";
+import "./css/login.css";
 
 class NavBar extends Component {
   state = {};
+  signout = () => {
+    firebase.auth().signOut();
+    alert("Signed out!");
+  };
   render() {
     return (
       <div>
@@ -39,6 +45,11 @@ class NavBar extends Component {
               <li className="nav-item">
                 <NavLink className="nav-link" to="/about">
                   About
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/" onClick={this.signout}>
+                  Signout
                 </NavLink>
               </li>
             </ul>

@@ -1,75 +1,62 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 
 import firebase from "firebase";
 import moment from "moment";
 import { Toast, toast } from "react-toastify";
 
 import "jquery-timepicker/jquery.timepicker";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import "./css/reservation.css";
+import Datepickers from "./Datepicker";
 
 class Reservation extends Component {
   state = {
-    // eventTitle: "",
-    // rooms: "",
-    // timeStart: "",
-    // timeEnd: "",
-    // datePick: ""
+    eventTitle: "",
+    rooms: "",
+    timeStart: "",
+    timeEnd: "",
+    datePick: "",
   };
   database = firebase.database().ref();
   rootRef = this.database.child("Reservations");
 
-  handleClick = text => {
+  handleClick = (text) => {
     toast.success(text);
     setTimeout(() => {
       window.location.reload();
-    }, 5000);
+    }, 3000);
   };
 
-  // handleEventTitleChange = event => {
-  //   this.setState({
-  //     eventTitle: event.target.value
-  //   });
-  // };
+  handleEventTitleChange = (event) => {
+    this.setState({
+      eventTitle: event.target.value,
+    });
+  };
 
-  // handleRoomsChange = event => {
-  //   this.setState({
-  //     rooms: event.target.value
-  //   });
-  // };
+  handleRoomsChange = (event) => {
+    this.setState({
+      rooms: event.target.value,
+    });
+  };
 
-  // handleTimeStartChange = event => {
-  //   // let [h, m] = event.target.value.split(":");
-  //   // let newTimeStart =
-  //   //   h >= 12
-  //   //     ? (h % 12) + 12 * (h % 12 === 0) + ":" + m + " PM"
-  //   //     : (h % 12) + 12 * (h % 12 === 0) + ":" + m + " AM";
-  //   let newTimeStart = moment(event.target.value).format("LTS");
+  handleTimeStartChange = (event) => {
+    this.setState({
+      timeStart: event.target.value,
+    });
+  };
 
-  //   this.setState({
-  //     timeStart: newTimeStart
-  //   });
-  // };
+  handleTimeEndChange = (event) => {
+    this.setState({
+      timeEnd: event.target.value,
+    });
+  };
 
-  // handleTimeEndChange = event => {
-  //   this.setState({
-  //     timeEnd: event.target.value
-  //   });
-  // };
-
-  // handleDateChange = event => {
-  //   this.setState({
-  //     datePick: Date(event.target.value)
-  //   });
-  // };
-
-  // handleSubmit = event => {
-  //   alert(
-  //     `${this.state.eventTitle} ${this.state.rooms} ${this.state.timeStart} ${this.state.timeEnd} ${this.state.datePick}`
-  //   );
-  // };
+  handleDateChange = (event) => {
+    this.setState({
+      datePick: Date(event.target.value),
+    });
+  };
 
   reserve = () => {
     let email = firebase.auth().currentUser.email;
@@ -105,6 +92,19 @@ class Reservation extends Component {
     this.handleClick("Reservation Saved !");
   };
 
+  isAddDisabled = () => {
+    if (
+      this.state.eventTitle.length <= 0 ||
+      this.state.timeStart.length <= 0 ||
+      this.state.timeEnd.length <= 0 ||
+      this.state.rooms.length <= 0
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   saveReservation = (
     email,
     rooms,
@@ -122,7 +122,7 @@ class Reservation extends Component {
       timeEnd: timeEnd,
       date: date,
       eventTitle: eventTitle,
-      dateSubmitted: dateSubmitted
+      dateSubmitted: dateSubmitted,
     });
   };
 
@@ -131,70 +131,66 @@ class Reservation extends Component {
       <div className="jumbotron">
         <h1>Reserve Now!</h1>
         <div className="container">
-          <form>
-            <div className="formReserve">
-              <div className="form-group">
-                <div className="input-group mb-3">
-                  <div className="input-group-prepend">
-                    <input
-                      className="form-control"
-                      type="text"
-                      name="eventTitle"
-                      id="eventTitle"
-                      value={this.state.eventTitle}
-                      onChange={this.handleEventTitleChange}
-                      required
-                    />
-                    <label className="input-group-text">Rooms</label>
-                  </div>
-                  <select
-                    className="custom-select"
-                    id="rooms"
-                    value={this.state.rooms}
-                    onChange={this.handleRoomsChange}
-                  >
-                    <option defaultValue>Choose...</option>
-                    <option value="Room 1">Room 1</option>
-                    <option value="Room 2">Room 2</option>
-                    <option value="Room 3">Room 3</option>
-                    <option value="Room 4">Room 4</option>
-                    <option value="Room 5">Room 5</option>
-                  </select>
-                  <input
-                    type="time"
-                    className="timePicker"
-                    name="timeStart"
-                    id="timeStart"
-                    value={this.state.timeStart}
-                    onChange={this.handleTimeStartChange}
-                    required
-                  />
-                  <input
-                    className="timePicker"
-                    type="time"
-                    name="timeEnd"
-                    id="timeEnd"
-                    value={this.state.timeEnd}
-                    onChange={this.handleTimeEndChange}
-                    required
-                  />
-                  <input type="date" name="datePick" id="datePick" required />
-                  {/* <DatePicker
-                    isClearable
-                    dateFormat="MMM Do YYYY"
-                    id="datePick"
-                    minDate={new Date()}
-                    // selected={this.selectedDate}
-                    // onChange={this.setSelectedDate}
-                  /> */}
-
-                  <button type="submit" onClick={this.reserve}>
-                    Submit
-                  </button>
-                </div>
-              </div>
+          <div className="formReserve">
+            <div className="form-group">
+              <label className="lead">Event</label>
+              <input
+                className="form-control"
+                type="text"
+                name="eventTitle"
+                id="eventTitle"
+                value={this.state.eventTitle}
+                onChange={this.handleEventTitleChange}
+                required
+              />
+              <label className="lead">Time Start</label>
+              <input
+                type="time"
+                className="timePicker"
+                name="timeStart"
+                id="timeStart"
+                value={this.state.timeStart}
+                onChange={this.handleTimeStartChange}
+                required
+              />
+              <label className="lead">Time End</label>
+              <input
+                className="timePicker"
+                type="time"
+                name="timeEnd"
+                id="timeEnd"
+                value={this.state.timeEnd}
+                onChange={this.handleTimeEndChange}
+                required
+              />
+              <Datepickers
+                id="datePick"
+                value={this.state.rooms}
+                onChange={this.handleRoomsChange}
+              />
+              <label className="lead">Rooms</label>
+              <select
+                className="custom-select"
+                id="rooms"
+                value={this.state.rooms}
+                onChange={this.handleRoomsChange}
+              >
+                <option defaultValue>Choose...</option>
+                <option value="Room 1">Room 1</option>
+                <option value="Room 2">Room 2</option>
+                <option value="Room 3">Room 3</option>
+                <option value="Room 4">Room 4</option>
+                <option value="Room 5">Room 5</option>
+              </select>
+              <button
+                className="btn btn2"
+                onClick={this.reserve}
+                disabled={this.isAddDisabled()}
+              >
+                Submit
+              </button>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     );

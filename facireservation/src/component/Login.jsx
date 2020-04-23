@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "jquery/dist/jquery.min.js";
+import "popper.js";
 
 import "./css/login.css";
 import SignUp from "./SignUpForm";
@@ -32,14 +33,14 @@ class Login extends Component {
     signInOptions: [
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
       firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-      firebase.auth.GithubAuthProvider.PROVIDER_ID
+      firebase.auth.GithubAuthProvider.PROVIDER_ID,
     ],
     callbacks: {
-      signInSuccess: () => false
-    }
+      signInSuccess: () => false,
+    },
   };
   componentDidMount = () => {
-    firebase.auth().onAuthStateChanged(user => {
+    firebase.auth().onAuthStateChanged((user) => {
       this.setState({ isSignedIn: !!user });
     });
   };
@@ -59,7 +60,6 @@ class Login extends Component {
               <Route path="/reservation" component={Reservation} />
               <Route path="/about" component={About} />
             </Switch>
-            <button onClick={() => firebase.auth().signOut()}>Sign out</button>
           </span>
         ) : (
           <span>
